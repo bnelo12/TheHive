@@ -16,8 +16,12 @@ def on_connect():
 def disconnect():
     return
 
-@socketio.on('code_request')
-def send_code():
-    print('Sending code')
-    socketio.emit('code_send', 'sample code')
+@socketio.on('webapp_code_send')
+def getWebappCode(code):
+    socketio.emit('code_send', code)
+    return
+
+@socketio.on('finished')
+def getWebappCode(result):
+    socketio.emit('finished', result)
     return
