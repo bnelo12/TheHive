@@ -46,7 +46,7 @@ subprocess.call(["pip", "install", "eventlet"])
     BENCHMARK
    -----------'''
 
-subprocess.call(["clear"])
+# subprocess.call(["clear"])
    
 tier = 0
 pi = 3.141592
@@ -98,7 +98,7 @@ else:
     tier = 4 #£0.0005/min
 
 
-subprocess.call(["clear"])
+# subprocess.call(["clear"])
 print(logo)
 
 
@@ -136,10 +136,18 @@ loop = True
 
 from socketIO_client import SocketIO, LoggingNamespace
 
+import subprocess
+from tempfile import NamedTemporaryFile
+
 def handle_code(code):
-    print('response:', code)
+    with NamedTemporaryFile(mode='w') as script_file:
+            script_file.write(code)
+            script_file.flush()
+            result = subprocess.check_output([sys.executable, script_file.name]).decode(sys.stdout.encoding)
+            socketIO.emit("finished", result)
 
 with SocketIO('localhost', 5000, LoggingNamespace) as socketIO:
+    socketIO.emit('ready')
     socketIO.on('code_send', handle_code)
     socketIO.wait()
 
@@ -148,7 +156,6 @@ while loop:
     sys.stdout.flush()
     time.sleep(0.1)
     sys.stdout.write('\b')
-
 
 
 #############################

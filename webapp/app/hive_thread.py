@@ -6,8 +6,11 @@ import sys
 import subprocess
 from tempfile import NamedTemporaryFile
 import threading
+from app import socketio
+from app.socket import clients
 
 thread_pool = []
+client_number = 0
 
 class HiveThread(object):
     """ This object exposes the threading API for TheHive """
@@ -48,14 +51,11 @@ print(main(farg, **kwargs))
 
 """.format(farg, kwargs)
 
-        #print(lines)
-        thread_pool.append(self)
-        with NamedTemporaryFile(mode='w') as script_file:
-            script_file.write(lines)
-            script_file.flush()
-            result = subprocess.check_output([sys.executable, script_file.name]).decode(sys.stdout.encoding)
-            print("out: ", result)
+        global client_number
+        socketio.emit('code_send', lines, room=clients[client_number])
+        client_number = (client_number + 1) % 1
+        socketio.on('finished', lambda result: self.set_result(result))
 
-    def main(farg, **kwargs):
+    def main(self, farg, **kwargs):
         """ This is the function where the user writes the code """
         pass

@@ -6,8 +6,10 @@ class Example(HiveThread):
     def __init__(self):
         HiveThread.__init__(self)
 
-    def main(farg, **kwargs):
+    def main(self, farg, **kwargs):
         return(farg + kwargs["arg2"])
 
 if __name__ == "__main__":
-    Example().run(2, arg2=3)
+    example = Example()
+    example.run(2, arg2=3)
+    result = example.get_result()
