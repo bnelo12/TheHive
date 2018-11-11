@@ -30,7 +30,7 @@ class HiveThread(object):
         """ This function is used by the content producer to propagate the result back """
         with self.join_lock:
             self.finished = True
-            self.result = returned_result
+            self.result += ', ' + returned_result
             self.join_lock.notifyAll()
 
     def get_result(self):
@@ -40,21 +40,22 @@ class HiveThread(object):
 
         return self.result
 
-    def run(self, farg, **kwargs):
+    def run(self, threads, variables, **kwargs):
         """ This is the function that packages and sends off a thread. """
-        lines = dedent(inspect.getsource(self.main))
-        lines += """
-farg = {}
-kwargs = {}
+#         lines = dedent(inspect.getsource(self.main))
+#         lines += """
+# farg = {}
+# kwargs = {}
 
-print(main(farg, **kwargs))
+# print(main(farg, **kwargs))
 
-""".format(farg, kwargs)
+# """.format(farg, kwargs)
 
         global client_number
-        socketio.emit('code_send', lines, room=clients[client_number])
-        client_number = (client_number + 1) % 1
-        socketio.on('finished', lambda result: self.set_result(result))
+        for i in range(len(threads)):
+            code = 'x=' + str(variables[i]) + '\n' + threads[i]
+            socketio.emit('code_send', code, room=clients[i])
+            socketio.on('finished', lambda result: self.set_result(result))
 
     @staticmethod
     def main(farg, **kwargs):

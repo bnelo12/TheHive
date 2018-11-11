@@ -152,6 +152,8 @@ def stdoutIO(stdout=None):
     sys.stdout = old
 
 def handle_code(code):
+    print('code:' + code)
+
     with stdoutIO() as s:
         exec(code)
 
