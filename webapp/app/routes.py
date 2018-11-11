@@ -2,7 +2,6 @@ from flask import render_template, request
 
 from app import app
 # from app import mongo
-from app import socketio
 
 @app.route('/')
 def indexPage():
