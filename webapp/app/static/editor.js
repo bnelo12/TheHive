@@ -6,6 +6,8 @@ document.getElementById('sendCodeButton').addEventListener('click', handleSendCo
 
 var socket = io();
 
+results = ''
+
 function handleSendCode() {
     const code = editor.getValue();
     socket.emit('webapp_code_send', code);
@@ -14,7 +16,8 @@ function handleSendCode() {
     const cardBody = document.getElementsByClassName('card-body')[0];
     cardBody.innerHTML += '<br /><br /><div class="loader"></div><h5>Running...</h5><br /><br />';
     socket.on('finished', (result) => {
-        cardBody.getElementsByTagName('h5')[1].textContent = `Result: ${result}`;
+        results += ', ' + result;
+        cardBody.getElementsByTagName('h5')[1].textContent = `Result: ${results}`;
         document.getElementsByClassName('loader')[0].remove();
     });
 }

@@ -40,7 +40,7 @@ class HiveThread(object):
 
         return self.result
 
-    def run(self, threads, variables, **kwargs):
+    def run(self, thread, variable, i):
         """ This is the function that packages and sends off a thread. """
 #         lines = dedent(inspect.getsource(self.main))
 #         lines += """
@@ -51,11 +51,8 @@ class HiveThread(object):
 
 # """.format(farg, kwargs)
 
-        global client_number
-        for i in range(len(threads)):
-            code = 'x=' + str(variables[i]) + '\n' + threads[i]
-            socketio.emit('code_send', code, room=clients[i])
-            socketio.on('finished', lambda result: self.set_result(result))
+        code = 'x=' + str(variable) + '\n' + thread
+        socketio.emit('code_send', code, room=clients[i])
 
     @staticmethod
     def main(farg, **kwargs):

@@ -43,9 +43,9 @@ def getWebappCode(code):
 
     print('sending code')
 
-    example = Example()
-    example.run(_locals['threads'], _locals['variables'])
-    result = example.get_result()
+    for i in range(len(_locals['threads'])):
+        example = Example()
+        example.run(_locals['threads'][i], _locals['variables'][i], i % len(clients))
 
     return
 
