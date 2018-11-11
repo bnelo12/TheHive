@@ -18,6 +18,7 @@ def disconnect():
 
 @socketio.on('webapp_code_send')
 def getWebappCode(code):
+    print('sending code')
     socketio.emit('code_send', code)
     return
 

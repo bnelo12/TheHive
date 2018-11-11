@@ -61,18 +61,18 @@ The benchmarking here basically works by running an insane amount complexed
 maths problems and timing how long it takes the processor to complete them
 '''
 
-for i in range(1,1000):
-    if i % 13 == 0:
-        print("#", end = "", flush = True)
+# for i in range(1,1000):
+#     if i % 13 == 0:
+#         print("#", end = "", flush = True)
               
-    for x in range(1,1000):
-        pi * 2**x
+#     for x in range(1,1000):
+#         pi * 2**x
 
-    for x in range(1,1000):
-        float(x) / pi
+#     for x in range(1,1000):
+#         float(x) / pi
             
-        for x in range(1,1000):
-            float(pi) / x
+#         for x in range(1,1000):
+#             float(pi) / x
             
             
                 
@@ -133,17 +133,21 @@ def spinning_cursor():
 spinner = spinning_cursor()
 
 loop = True
-count = 0
+
+from socketIO_client import SocketIO, LoggingNamespace
+
+def handle_code(code):
+    print('response:', code)
+
+with SocketIO('localhost', 5000, LoggingNamespace) as socketIO:
+    socketIO.on('code_send', handle_code)
+    socketIO.wait()
 
 while loop:
     sys.stdout.write(next(spinner))
     sys.stdout.flush()
     time.sleep(0.1)
     sys.stdout.write('\b')
-    count =+ 1
-    if count == 3750:
-        loop = False
-    ### TODO: Set loop to False when connection detected ###
 
 
 
