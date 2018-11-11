@@ -34,7 +34,7 @@ time.sleep(0.5)
 print("[PIP INSTALL FLASK]")
 subprocess.call(["pip", "install", "flask"])
 print("[PIP INSTALL SOCKETIO]")
-subprocess.call(["pip", "install", "socketio"])
+# subprocess.call(["pip", "install", "socketio"])
 print("[PIP INSTALL PYMONGO]")
 subprocess.call(["pip", "install", "pymongo"])
 print("[PIP INSTALL EVENTLET]")
@@ -138,13 +138,24 @@ from socketIO_client import SocketIO, LoggingNamespace
 
 import subprocess
 from tempfile import NamedTemporaryFile
+import sys
+import io
+import contextlib
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = io.StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
 
 def handle_code(code):
-    with NamedTemporaryFile(mode='w') as script_file:
-            script_file.write(code)
-            script_file.flush()
-            result = subprocess.check_output([sys.executable, script_file.name]).decode(sys.stdout.encoding)
-            socketIO.emit("finished", result)
+    with stdoutIO() as s:
+        exec(code)
+
+    socketIO.emit("finished", s.getvalue())
 
 with SocketIO('localhost', 5000, LoggingNamespace) as socketIO:
     socketIO.emit('ready')

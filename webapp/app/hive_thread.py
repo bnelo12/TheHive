@@ -56,6 +56,7 @@ print(main(farg, **kwargs))
         client_number = (client_number + 1) % 1
         socketio.on('finished', lambda result: self.set_result(result))
 
-    def main(self, farg, **kwargs):
+    @staticmethod
+    def main(farg, **kwargs):
         """ This is the function where the user writes the code """
         pass

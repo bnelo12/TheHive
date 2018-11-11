@@ -24,24 +24,33 @@ def on_ready():
 def disconnectSockets():
     return
 
+import subprocess
+from tempfile import NamedTemporaryFile
+import sys
 
 @socketio.on('webapp_code_send')
 def getWebappCode(code):
-    from app.hive_thread import HiveThread
+    code = """
+class Example(HiveThread):
+    def __init__(self):
+        HiveThread.__init__(self)
 
-    class Example(HiveThread):
-        def __init__(self):
-            HiveThread.__init__(self)
+    def main(farg, **kwargs):
+        return(farg + kwargs["arg2"])
 
-        def main(self, farg, **kwargs):
-            return(farg + kwargs["arg2"])
+print('sending code')
 
-    print('sending code')
+example = Example()
+example.run(3, arg2=3)
+result = example.get_result()
+    """
 
-    example = Example()
-    example.run(2, arg2=3)
-    result = example.get_result()
-    socketio.emit('finished', result)
+    with NamedTemporaryFile(mode='w') as script_file:
+        script_file.write(code)
+        script_file.flush()
+        result = subprocess.check_output([sys.executable, script_file.name]).decode(sys.stdout.encoding)
+        socketio.emit('finished', result)
+
     return
 
 @socketio.on('finished')
