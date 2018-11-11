@@ -34,7 +34,7 @@ time.sleep(0.5)
 print("[PIP INSTALL FLASK]")
 subprocess.call(["pip", "install", "flask"])
 print("[PIP INSTALL SOCKETIO]")
-# subprocess.call(["pip", "install", "socketio"])
+subprocess.call(["pip", "install", "socketio"])
 print("[PIP INSTALL PYMONGO]")
 subprocess.call(["pip", "install", "pymongo"])
 print("[PIP INSTALL EVENTLET]")
@@ -46,7 +46,7 @@ subprocess.call(["pip", "install", "eventlet"])
     BENCHMARK
    -----------'''
 
-# subprocess.call(["clear"])
+subprocess.call(["clear"])
    
 tier = 0
 pi = 3.141592
@@ -98,7 +98,7 @@ else:
     tier = 4 #£0.0005/min
 
 
-# subprocess.call(["clear"])
+subprocess.call(["clear"])
 print(logo)
 
 
@@ -149,8 +149,6 @@ while loop:
     time.sleep(0.1)
     sys.stdout.write('\b')
 
-    ### TODO: Set loop to False when connection detected ###
-
 
 
 #############################
@@ -176,36 +174,38 @@ while loop:
 
 '''--------
     SOCKET
-   --------'''
+   --------''
 
-# ip = ""
-# port = 22
-# max_connections = 10
+ip = ""
+port = 22
+max_connections = 10
 
-# #get ip in JSON
-# src = urllib.request.urlopen("https://api.ipify.org/?format=json")
-# json = src.read().decode()
+#get ip in JSON
+src = urllib.request.urlopen("https://api.ipify.org/?format=json")
+json = src.read().decode()
 
-# #extract ip
-# for letter in json:
-#     if letter.isdigit() or letter == ".":
-#         ip += str(letter)
+#extract ip
+for letter in json:
+    if letter.isdigit() or letter == ".":
+        ip += str(letter)
 
 
-# #set up FTPS socket
-# def FTPS():
-#     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#     serversocket.bind((socket.gethostname(), port))
-#     serversocket.listen(max_connections)
+#set up FTPS socket
+def FTPS():
+    serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    serversocket.bind((socket.gethostname(), port))
+    serversocket.listen(max_connections)
         
-#     ''
-#         Get system OS and gain root access if Mac
-#     ''
-#     if (os.name == "posix"):
-#         if os.access('/root', os.R_OK|os.X_OK):
-#             os.chdir('/root')
-#             FTPS()
-#     else:
-#         FTPS()        
+    ''
+        Get system OS and gain root access if Mac
+    ''
+    if (os.name == "posix"):
+        if os.access('/root', os.R_OK|os.X_OK):
+            os.chdir('/root')
+            FTPS()
+    else:
+        FTPS()        
 
-# print("FTPS SOCKET SET UP\nHOST IP "+ip+"\nPORT "+str(port)+"\nMAX " + str(max_connections) + " CONNECTIONS\n\nReturn to start")
+print("FTPS SOCKET SET UP\nHOST IP "+ip+"\nPORT "+str(port)+"\nMAX " + str(max_connections) + " CONNECTIONS\n\nReturn to start")
+
+'''
