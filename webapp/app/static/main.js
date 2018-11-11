@@ -3,8 +3,8 @@
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) loginForm.addEventListener('submit', handleLogin);
+    const loginForm = document.getElementById('login-form-submit');
+    if (loginForm) loginForm.addEventListener('click', handleLogin);
 
     const logoutButton = document.getElementById('logoutButton');
     if (logoutButton) logoutButton.addEventListener('click', handleLogout);
@@ -42,8 +42,6 @@ function handleLogin() {
             alert(error.responseText);
         }
     });
-
-    return false;
 }
 
 function handleLogout() {
@@ -66,5 +64,4 @@ function handleSignUp() {
             alert(error.responseText);
         }
     });
-    return false;
 }
