@@ -6,6 +6,11 @@
     <h5>Rent tier {{ tier_number }} servers</h5>
     <p class="card-text">Upload your code below to run it on tier {{ tier_number }} servers</p>
     <div id="editor"># Enter or copy and paste code here</div>
+    <button id="sendCodeButton" class="btn btn-primary editor-button">Send to Network</button>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"
+        type="text/javascript"
+        charset="utf-8"
+    ></script>
     <script src="static/editor.js" type="text/javascript" charset="utf-8"></script>
-    <button id="run-code-button" class="btn btn-primary editor-button">Send to Network</button> 
 {% endblock %}

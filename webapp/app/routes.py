@@ -2,7 +2,7 @@ from flask import render_template, request
 
 from app import app
 # from app import mongo
-from app import socket
+from app import socketio
 
 @app.route('/')
 def indexPage():
@@ -38,3 +38,9 @@ def editorPage():
 def profilePage():
     user = request.cookies.get('username')
     return render_template('profile.html', user=user)
+
+@app.route('/api/send_code', methods=['POST'])
+def sendCode():
+    body = request.get_json()
+    socketio.emit('code_send', body['code'])
+    return 'Code sent'
